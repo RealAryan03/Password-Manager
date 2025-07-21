@@ -1,0 +1,43 @@
+# Password Manager Dependencies
+# Core dependencies for secure password management
+
+# Cryptography library for AES-256 encryption and key derivation
+cryptography>=41.0.0
+
+# For JSON handling (built-in with Python 3.x)
+# json - no external dependency needed
+
+# For secure password input (built-in with Python 3.x)
+# getpass - no external dependency needed
+
+# Optional dependencies for enhanced functionality
+# Uncomment the following if you want additional features:
+
+# For GUI interface (if implementing Tkinter alternative)
+# tkinter - built-in with most Python installations
+
+# For web interface (if implementing Flask/Django version)
+# flask>=2.0.0
+# flask-bcrypt>=1.0.0
+# flask-login>=0.6.0
+
+# For database support (if using SQLite/PostgreSQL instead of JSON)
+# sqlite3 - built-in with Python 3.x
+# psycopg2-binary>=2.9.0  # for PostgreSQL
+
+# For additional security features
+# argon2-cffi>=21.0.0  # Alternative password hashing
+# pyotp>=2.6.0  # For TOTP 2FA implementation
+
+# For advanced CLI interface
+# click>=8.0.0
+# colorama>=0.4.4  # For colored terminal output
+
+# For testing
+# pytest>=7.0.0
+# pytest-cov>=4.0.0
+
+# For development and linting
+# black>=22.0.0  # Code formatter
+# flake8>=5.0.0  # Linting
+# mypy>=1.0.0   # Type checking
