@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureVault - Password Manager</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide@0.263.1/dist/umd/lucide.js">
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body data-color-scheme="dark">
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <!-- Authentication Section -->
+    <div id="auth-section" class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <div class="auth-logo">
+                    <i data-lucide="shield-check"></i>
+                    <h1>SecureVault</h1>
+                </div>
+                <p>Professional Password Manager</p>
+            </div>
+
+            <!-- Login Form -->
+            <div id="login-form" class="auth-form">
+                <h2>Sign In</h2>
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label class="form-label" for="login-email">Email</label>
+                        <input type="email" id="login-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="login-password">Master Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="login-password" class="form-control" required>
+                            <button type="button" class="password-toggle" data-target="login-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Sign In</button>
+                </form>
+                <p class="auth-switch">
+                    Don't have an account? 
+                    <a href="#" id="show-register">Create Account</a>
+                </p>
+            </div>
+
+            <!-- Register Form -->
+            <div id="register-form" class="auth-form hidden">
+                <h2>Create Account</h2>
+                <form id="registerForm">
+                    <div class="form-group">
+                        <label class="form-label" for="register-email">Email</label>
+                        <input type="email" id="register-email" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="register-password">Master Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="register-password" class="form-control" required>
+                            <button type="button" class="password-toggle" data-target="register-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength-indicator">
+                            <div class="strength-bar">
+                                <div id="register-strength-bar" class="strength-fill"></div>
+                            </div>
+                            <div id="register-strength-text" class="strength-text">Enter a password</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="confirm-password">Confirm Master Password</label>
+                        <div class="password-input-container">
+                            <input type="password" id="confirm-password" class="form-control" required>
+                            <button type="button" class="password-toggle" data-target="confirm-password">
+                                <i data-lucide="eye"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <button type="submit" class="btn btn--primary btn--full-width">Create Account</button>
+                </form>
+                <p class="auth-switch">
+                    Already have an account? 
+                    <a href="#" id="show-login">Sign In</a>
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Dashboard -->
+    <div id="dashboard" class="hidden">
+        <!-- Navigation Header -->
+        <header class="dashboard-header">
+            <div class="header-content">
+                <div class="header-left">
+                    <div class="logo">
+                        <i data-lucide="shield-check"></i>
+                        <span>SecureVault</span>
+                    </div>
+                </div>
+                <div class="header-right">
+                    <span id="user-email" class="user-info"></span>
+                    <button id="logout-btn" class="btn btn--outline btn--sm">
+                        <i data-lucide="log-out"></i>
+                        Logout
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="dashboard-main">
+            <div class="dashboard-container">
+                <!-- Action Bar -->
+                <div class="action-bar">
+                    <div class="search-container">
+                        <div class="search-input-container">
+                            <i data-lucide="search"></i>
+                            <input type="text" id="search-input" class="form-control" placeholder="Search passwords...">
+                        </div>
+                    </div>
+                    <div class="action-buttons">
+                        <button id="generate-password-btn" class="btn btn--secondary">
+                            <i data-lucide="refresh-cw"></i>
+                            Generate Password
+                        </button>
+                        <button id="add-password-btn" class="btn btn--primary">
+                            <i data-lucide="plus"></i>
+                            Add Password
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Password Vault Table -->
+                <div class="vault-container">
+                    <div class="vault-header">
+                        <h2>Password Vault</h2>
+                        <span id="password-count" class="password-count">0 passwords</span>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="vault-table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Website</th>
+                                    <th>Username</th>
+                                    <th>Password</th>
+                                    <th>Strength</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="password-list">
+                                <!-- Password entries will be populated here -->
+                            </tbody>
+                        </table>
+                        <div id="empty-state" class="empty-state hidden">
+                            <i data-lucide="key"></i>
+                            <h3>No passwords found</h3>
+                            <p>Add your first password to get started</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Password Generator Modal -->
+    <div id="generator-modal" class="modal hidden">
+        <div class="modal-overlay" id="generator-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Password Generator</h3>
+                <button class="modal-close" id="generator-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="generator-container">
+                    <div class="generated-password-container">
+                        <input type="text" id="generated-password" class="form-control generated-password" readonly>
+                        <button type="button" id="copy-generated" class="btn btn--outline">
+                            <i data-lucide="copy"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="generator-options">
+                        <div class="form-group">
+                            <label class="form-label">Length: <span id="length-value">16</span></label>
+                            <input type="range" id="password-length" min="8" max="32" value="16" class="length-slider">
+                        </div>
+                        
+                        <div class="checkbox-group">
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="include-uppercase" checked>
+                                <span class="checkmark"></span>
+                                Uppercase Letters (A-Z)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="include-lowercase" checked>
+                                <span class="checkmark"></span>
+                                Lowercase Letters (a-z)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="include-numbers" checked>
+                                <span class="checkmark"></span>
+                                Numbers (0-9)
+                            </label>
+                            <label class="checkbox-label">
+                                <input type="checkbox" id="include-symbols" checked>
+                                <span class="checkmark"></span>
+                                Symbols (!@#$%^&*)
+                            </label>
+                        </div>
+                        
+                        <button id="generate-btn" class="btn btn--primary btn--full-width">
+                            <i data-lucide="refresh-cw"></i>
+                            Generate Password
+                        </button>
+                    </div>
+
+                    <div class="password-strength-indicator">
+                        <div class="strength-bar">
+                            <div id="generated-strength-bar" class="strength-fill"></div>
+                        </div>
+                        <div id="generated-strength-text" class="strength-text">Generate a password to see strength</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Add/Edit Password Modal -->
+    <div id="password-modal" class="modal hidden">
+        <div class="modal-overlay" id="password-overlay"></div>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="password-modal-title">Add Password</h3>
+                <button class="modal-close" id="password-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="password-form">
+                    <input type="hidden" id="password-id">
+                    <div class="form-group">
+                        <label class="form-label" for="password-title">Title *</label>
+                        <input type="text" id="password-title" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password-website">Website</label>
+                        <input type="url" id="password-website" class="form-control" placeholder="https://example.com">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password-username">Username/Email</label>
+                        <input type="text" id="password-username" class="form-control">
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password-value">Password *</label>
+                        <div class="password-input-container">
+                            <input type="password" id="password-value" class="form-control" required>
+                            <button type="button" class="password-toggle" data-target="password-value">
+                                <i data-lucide="eye"></i>
+                            </button>
+                            <button type="button" id="use-generated" class="btn btn--outline btn--sm">
+                                <i data-lucide="wand-2"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength-indicator">
+                            <div class="strength-bar">
+                                <div id="form-strength-bar" class="strength-fill"></div>
+                            </div>
+                            <div id="form-strength-text" class="strength-text">Enter a password</div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label" for="password-notes">Notes</label>
+                        <textarea id="password-notes" class="form-control" rows="3"></textarea>
+                    </div>
+                    <div class="modal-actions">
+                        <button type="button" id="cancel-password" class="btn btn--outline">Cancel</button>
+                        <button type="submit" class="btn btn--primary">Save Password</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div id="delete-modal" class="modal hidden">
+        <div class="modal-overlay" id="delete-overlay"></div>
+        <div class="modal-content modal-content--small">
+            <div class="modal-header">
+                <h3>Delete Password</h3>
+                <button class="modal-close" id="delete-close">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete "<span id="delete-title"></span>"? This action cannot be undone.</p>
+                <div class="modal-actions">
+                    <button type="button" id="cancel-delete" class="btn btn--outline">Cancel</button>
+                    <button type="button" id="confirm-delete" class="btn btn--error">Delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
